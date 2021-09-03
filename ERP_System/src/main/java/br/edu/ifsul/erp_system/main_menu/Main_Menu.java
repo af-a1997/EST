@@ -5,27 +5,23 @@ import br.edu.ifsul.erp_system.browsing_features.ID_Filter;
 import java.util.Scanner;
 
 public class Main_Menu {
-    public static void main(){
-        System.out.println("Bienvenid@ al sistema de gestión de productos electrónicos, ERP_System.");
-        System.out.println("=======================================================================\n\n");
+    public static void main(String[] args){
+        System.out.println("Welcome to ERP_System, your electronic product manager.");
+        System.out.println("=======================================================\n\n");
 
-        System.out.println("Ingrese una opción:\n");
+        System.out.println("Please input a number matching your choice and hit [ENTER].");
 
-        /*
-        * Meant to look like a graphical menu.
-        * TODO: option 3.
-        * */
-        System.out.println(".--------------------------------.");
-        System.out.println(". 1 = Buscar producto por ID     |");
-        System.out.println(". 2 = Buscar producto por nombre |");
-        // System.out.println(". 3 = Adquirir producto en stock |");
-        System.out.println(". 4 = Salir                      |");
-        System.out.println(".________________________________.");
+        menu_entries(1);
 
         int opt = new Scanner(System.in).nextInt();
 
         while(opt<=0 || opt>=5){
-            System.out.print("Ingrese una opción correcta: ");
+            System.out.println(".----------------------------------. ");
+            System.out.println("| Invalid option!                  | ");
+            System.out.println("| Input a valid option from these: | ");
+            System.out.println(":----------------------------.-----. ");
+            menu_entries(0);
+
             opt = new Scanner(System.in).nextInt();
         }
 
@@ -33,7 +29,6 @@ public class Main_Menu {
             // TODO: search by ID.
 
             ID_Filter idf = new ID_Filter();
-            idf.main();
         }
         else if(opt==2){
             // TODO: search by name.
@@ -41,5 +36,21 @@ public class Main_Menu {
         else if(opt==3){
             // TODO: take product from stock by amount.
         }
+    }
+
+    // These menu options are printed in more than one instance, so it uses a dedicated function.
+    public static void menu_entries(int introduction){
+        /*
+         * Meant to look like a graphical menu.
+         * TODO: code the following options: 1, 2 and 3.
+         * */
+        if(introduction==1) System.out.println(".----------------------------.");
+        // Introduction value is used in case a note is attached above the visual menu.
+
+        System.out.println("| 1 = Product lookup by ID   |");
+        System.out.println("| 2 = Product lookup by name |");
+        System.out.println("| 3 = Get product in stock   |");
+        System.out.println("| 4 = Exit                   |");
+        System.out.println(".____________________________.");
     }
 }

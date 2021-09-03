@@ -15,7 +15,7 @@ public class CSV_Loader {
 
         try (CSVReader reader = new CSVReader(new FileReader(fileName))) {
             List<String[]> r = reader.readAll();
-            r.forEach(x -> System.out.println(Arrays.toString(x)));
+            // r.forEach(x -> System.out.println(Arrays.toString(x)));
         } catch (CsvException e) {
             e.printStackTrace();
         }

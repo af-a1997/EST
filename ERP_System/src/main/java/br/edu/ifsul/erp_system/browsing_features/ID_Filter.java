@@ -1,7 +1,7 @@
 package br.edu.ifsul.erp_system.browsing_features;
 
 public class ID_Filter {
-    public static void main(){
+    public static void main(String[] args){
         // TODO: develop search by ID function.
     }
 }
