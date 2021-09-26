@@ -18,8 +18,18 @@
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>5.5.1</version>
+            <version>5.5.2</version>
         </dependency>
     </dependencies>
 
+    <!-- Automatic fix proposed by VS Code to work around dependency conflict issue. -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.11</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

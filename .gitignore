@@ -1,3 +1,5 @@
-target/
-_database/
+ERP_System/.idea
+ERP_System/.settings
+ERP_System/_database/
+ERP_System/target/
 *.csv

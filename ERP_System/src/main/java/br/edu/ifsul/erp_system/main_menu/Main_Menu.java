@@ -1,8 +1,11 @@
 package br.edu.ifsul.erp_system.main_menu;
 
-import br.edu.ifsul.erp_system.browsing_features.ID_Filter;
-
+import java.io.IOException;
 import java.util.Scanner;
+
+import br.edu.ifsul.erp_system.database.DB_Loader;
+
+@SuppressWarnings({ "resource" })
 
 public class Main_Menu {
     public static void main(String[] args){
@@ -25,16 +28,38 @@ public class Main_Menu {
             opt = new Scanner(System.in).nextInt();
         }
 
-        if(opt==1){
-            // TODO: search by ID.
+        menu_actions(opt);
+    }
 
-            ID_Filter idf = new ID_Filter();
+    public static void menu_actions(int choice){
+        if(choice==1){
+            System.out.print("Write the ID associated to the product you're looking for: ");
+            int id = new Scanner(System.in).nextInt();
+
+            try {
+                DB_Loader.findByID(id);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
-        else if(opt==2){
-            // TODO: search by name.
+        else if(choice==2){
+            System.out.print("Write the name (or part of it) of the product you're looking for: ");
+            String name = new Scanner(System.in).nextLine();
+
+            try {
+                DB_Loader.findByName(name);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
-        else if(opt==3){
+        else if(choice==3){
             // TODO: take product from stock by amount.
+        }
+        else if(choice==4){
+            System.out.println("Halted system.");
+            System.exit(0);
         }
     }
 
@@ -42,15 +67,74 @@ public class Main_Menu {
     public static void menu_entries(int introduction){
         /*
          * Meant to look like a graphical menu.
+         * 
          * TODO: code the following options: 1, 2 and 3.
          * */
         if(introduction==1) System.out.println(".----------------------------.");
-        // Introduction value is used in case a note is attached above the visual menu.
+        // Introduction value is used in case a note is attached above the visual menu, this means this parameter merely adds a little cosmetic change as needed.
 
         System.out.println("| 1 = Product lookup by ID   |");
         System.out.println("| 2 = Product lookup by name |");
         System.out.println("| 3 = Get product in stock   |");
         System.out.println("| 4 = Exit                   |");
         System.out.println(".____________________________.");
+
+        // Each entry and horizontal lines in the menu is currently 30 characters long, counting boundaries and spaces.
+    }
+
+    // This function provides the user with confirmation as to whether or not they'd like to make another product search query.
+    public static void confirmationDialogue(int source_option){
+        String choice = "C";
+        String source_option_descriptor = " ";
+        String top_bar = ".";
+        String bottom_bar = ":_________.";
+
+        // To display the kind of query the user may want after looking up a product.
+        if(source_option==1){
+            source_option_descriptor = "ID";
+        }
+        else if(source_option==2){
+            source_option_descriptor = "name";
+        }
+
+        // Build up the confirmation question after the query type has been identified.
+        String confirmation_string = "| Would you like to perform another "+source_option_descriptor+" lookup query? |";
+        String confirmation_instruction = "| Write one of two words below and hit [ENTER].";
+
+        // To build part of the menu, purely comestic.
+        for(int x=0;x<confirmation_string.length()-1;x++){
+            if(x<confirmation_string.length()-2){
+                top_bar += "-";
+                if(x>9)
+                    bottom_bar += "_";
+
+                if(x>45)
+                    confirmation_instruction += " ";
+            }
+            else{
+                top_bar += ".";
+                bottom_bar += ".";
+                confirmation_instruction += "|";
+            }
+        }
+
+        // As long as you pick a non-existing option, you'll be prompted to enter a valid option again.
+        do{
+            System.out.println(top_bar+"\n"+confirmation_string+"\n"+confirmation_instruction+"\n"+bottom_bar);
+            System.out.println("| Y = Yes |");
+            System.out.println("| N = No  |");
+            System.out.println("._________.");
+            choice = new Scanner(System.in).nextLine();
+
+            if(choice.equalsIgnoreCase("Y"))
+                menu_actions(source_option);
+            else if(choice.equalsIgnoreCase("N"))
+                main(null);
+            else{
+                System.out.println(".----------------------------.");
+                System.out.println("| Invalid option, try again. |");
+                System.out.println(".____________________________.\n");
+            }
+        } while (!choice.equalsIgnoreCase("Y") || !choice.equalsIgnoreCase("N"));
     }
 }
