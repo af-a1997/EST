@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Data_Fields {
-    // Class that contains almost all of the product fields.
+    // Class that contains almost all of the product fields in the DB and accomodates their information.
+    
     public static List<String[]> r = new ArrayList<String[]>();
+
+    public List<Stock> stock_list_cont = new ArrayList<>();
 
     /*
      * Prepares a variable for each field in the CSV DB, except the last five columns.
@@ -50,7 +53,8 @@ public class Data_Fields {
                 + ", prices_merchant=" + prices_merchant + ", prices_sale=" + prices_sale + ", prices_shipping="
                 + prices_shipping + ", primary_categories=" + primary_categories + ", product_id=" + product_id
                 + ", seen_timestamp=" + seen_timestamp + ", srcURLs=" + srcURLs + ", updated=" + updated + ", weight="
-                + weight + "]";
+                + weight + ", stock_list_cont="
+                + stock_list_cont + "]";
     }
 
     // Generated getters and setters.
@@ -261,5 +265,13 @@ public class Data_Fields {
 
     public void setWeight(String weight) {
         this.weight = weight;
+    }
+
+    public List<Stock> getStock_list_cont() {
+        return stock_list_cont;
+    }
+
+    public void setStock_list_cont(List<Stock> stock_list_cont) {
+        this.stock_list_cont = stock_list_cont;
     }
 }

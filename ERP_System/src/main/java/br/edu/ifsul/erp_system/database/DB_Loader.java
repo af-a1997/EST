@@ -3,6 +3,8 @@ package br.edu.ifsul.erp_system.database;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 // Imports OpenCSV to handle the comma-separated value database linked below, only needed in this class. Exception handler must also be imported.
@@ -21,11 +23,12 @@ public class DB_Loader {
 
     // Loads the database and keeps it stored as a list in the RAM.
     public static void main(String[] args) throws IOException {
-        // Make sure to update the location of your database copy in the following string!!
+        // IMPORTANT! Make sure to update the location of your database copy in the following string!!
         String fileName = "C:\\Users\\af1899\\Documents\\GitHub\\EST\\ERP_System\\_database\\Products.csv";
         System.out.println("Loading database...");
 
         try (CSVReader reader = new CSVReader(new FileReader(fileName))) {
+            // Reads contents from CSV DB and loads them into this list.
             List<String[]> r = reader.readAll();
 
             for(String[] product_listing : r){
@@ -60,16 +63,17 @@ public class DB_Loader {
 
                 df_list.add(df);
             }
+
             System.out.println("Success!");
         } catch (CsvException e) {
             e.printStackTrace();
         }
 
-        // If the database is loaded, loads the menu.
-
+        // If the database is loaded, loads the main menu.
         Main_Menu.main(args);
     }
 
+    // Option 1: find products by their ID, lists one product at a time.
     public static void findByID(int pr_id) throws IOException {
         boolean found = false;
         String pr_id_string = Integer.toString(pr_id);
@@ -77,6 +81,7 @@ public class DB_Loader {
         System.out.println("\n====================\n");
 
         for(int x=0;x<df_list.size();x++){
+            // Looks for the product matching the ID and returns some relevant info about it.
             if(df_list.get(x).getProduct_id().equals(pr_id_string)){
                 System.out.println("Product with ID " + df_list.get(x).getProduct_id() + " has been found, here is some of its information:\n");
                 System.out.println("Name: " + df_list.get(x).getName());
@@ -84,15 +89,19 @@ public class DB_Loader {
                 System.out.println("Minimum cost: " + df_list.get(x).getPrices_aMin() + " " + df_list.get(x).getPrices_currency());
                 System.out.print("\n"); // Separates confirmation dialogue a little from query output.
 
+                // To determine if the next message should appear or not.
                 found = true;
             }
         }
 
-        if(found==false) System.out.println("There isn't a product matching the ID " + pr_id + ", the maximum available ID is: " + df_list.size());
+        // This will appear if no matches were found, note that the size of [df_list] is being reduced by 1, this is to give the user the actual maximum ID, so that they learn better how much products are stored.
+        if(found==false) System.out.println("There isn't a product matching the ID " + pr_id + ", the maximum available ID is: " + (df_list.size()-1));
 
+        // Asks the user if they want to make another search query.
         Main_Menu.confirmationDialogue(1);
     }
 
+    // Option 2: look for products by name, may yield multiple results.
     public static void findByName(String pr_name) throws IOException {
         int results = 0;
         String regex_comparator = "(.*)" + pr_name + "(.*)";
@@ -100,6 +109,7 @@ public class DB_Loader {
         System.out.println("\n====================\n");
 
         for(int x=0;x<df_list.size();x++){
+            // Utilizes a RegEx comparator to ensure the user can find all products of a kind/brand/etc. that have the written string anywhere in the name:
             if(df_list.get(x).getName().matches(regex_comparator)){
                 System.out.println("ID: " + df_list.get(x).getProduct_id());
                 System.out.println("Name: " + df_list.get(x).getName());
@@ -113,12 +123,78 @@ public class DB_Loader {
             }
         }
 
+        // Prints this if no products with the name were found.
         if(results==0) System.out.println("There isn't a \""+pr_name+"\" product.");
 
+        // Prints the amount of products found (if any), [p] variable is just there for grammar.
         String p = "product";
         if(results>=2) p += "s";
         else System.out.println("\n====================\nA total of " + results + " " + p + " has been found.");
 
+        // Asks the user if they want to make another search query.
         Main_Menu.confirmationDialogue(2);
+    }
+
+    // Option 3: retrieves product from stock, by ID.
+    public static void retrieveProduct(int pid){
+
+        for (int x=0;x<Add_Stock.stock_list.size();x++){
+            Add_Stock.setPrid(x);
+
+            if (pid == Add_Stock.getPrid()){
+                System.out.println(Add_Stock.stock_list.get(x));
+            }
+        }
+        
+        System.out.println("\nFinished.\n");
+    }
+
+    // Option 5: looks for product by ID, but using a binary search approach.
+    public static void findProdByIdBin(int b_pr_id_s) throws IOException {
+        // TODO: write binary search code here.
+        int s = df_list.size();
+        int[] id_list = new int[s];
+
+        for(int x=0;x<df_list.size();x++){
+            id_list[x] = Integer.valueOf(df_list.get(x).getProduct_id());
+        }
+
+        int pid = binarySearch(id_list,0,id_list.length,id_list[id_list.length/2]);
+
+           if(Integer.valueOf(df_list.get(pid).getProduct_id()) == b_pr_id_s){
+            System.out.println("Product with ID " + df_list.get(pid).getProduct_id() + " has been found, here is some of its information:\n");
+            System.out.println("Name: " + df_list.get(pid).getName());
+            System.out.println("Maximum cost: " + df_list.get(pid).getPrices_aMax() + " " + df_list.get(pid).getPrices_currency());
+            System.out.println("Minimum cost: " + df_list.get(pid).getPrices_aMin() + " " + df_list.get(pid).getPrices_currency());
+            System.out.print("\n");
+        }
+        else{
+            System.out.println("This product hasn't been found");
+        }
+        
+
+        //int np = Integer.valueOf(df_list.get(b_pr_id_s).getProduct_id());
+        //System.out.println("ID = " + np);
+    }
+
+    // Binary search code from: https://www.javatpoint.com/binary-search-in-java
+    public static int binarySearch(int arr[], int first, int last, int key){  
+        int mid = (first + last)/2;  
+        while( first <= last ){  
+            if ( arr[mid] < key ){  
+                first = mid + 1;     
+        }else if ( arr[mid] == key ){  
+            return mid;
+            //break;  
+        }else{  
+            last = mid - 1;
+        }  
+            mid = (first + last)/2;
+        }  
+        if ( first > last ){
+            System.out.println("Element is not found!");
+            return -1;
+        }
+        return -2;
     }
 }

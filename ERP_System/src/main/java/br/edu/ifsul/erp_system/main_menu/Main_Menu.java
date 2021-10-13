@@ -3,6 +3,7 @@ package br.edu.ifsul.erp_system.main_menu;
 import java.io.IOException;
 import java.util.Scanner;
 
+import br.edu.ifsul.erp_system.database.Add_Stock;
 import br.edu.ifsul.erp_system.database.DB_Loader;
 
 @SuppressWarnings({ "resource" })
@@ -18,11 +19,11 @@ public class Main_Menu {
 
         int opt = new Scanner(System.in).nextInt();
 
-        while(opt<=0 || opt>=5){
+        while(opt<=0 || opt>=7){
             System.out.println(".----------------------------------. ");
             System.out.println("| Invalid option!                  | ");
             System.out.println("| Input a valid option from these: | ");
-            System.out.println(":----------------------------.-----. ");
+            System.out.println(":----------------------------------+ ");
             menu_entries(0);
 
             opt = new Scanner(System.in).nextInt();
@@ -31,7 +32,7 @@ public class Main_Menu {
         menu_actions(opt);
     }
 
-    public static void menu_actions(int choice){
+    public static void menu_actions(int choice) {
         if(choice==1){
             System.out.print("Write the ID associated to the product you're looking for: ");
             int id = new Scanner(System.in).nextInt();
@@ -39,7 +40,6 @@ public class Main_Menu {
             try {
                 DB_Loader.findByID(id);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -50,34 +50,46 @@ public class Main_Menu {
             try {
                 DB_Loader.findByName(name);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
         else if(choice==3){
-            // TODO: take product from stock by amount.
+            
+            int pid = 0;
+            System.out.print("Enter the product's ID: ");
+            pid = new Scanner(System.in).nextInt();
+
+            DB_Loader.retrieveProduct(pid);
         }
-        else if(choice==4){
+        else if(choice==5){
+            System.out.print("Write the ID associated to the product you're looking for: ");
+            int id = new Scanner(System.in).nextInt();
+
+            try {
+                System.out.println("Attempting a binary search for the product...\n");
+                DB_Loader.findProdByIdBin(id);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(choice==6){
             System.out.println("Halted system.");
             System.exit(0);
         }
     }
 
-    // These menu options are printed in more than one instance, so it uses a dedicated function.
+    // These menu options are printed in more than one instance, so it uses a dedicated function, contains a graphical menu of sorts made in the console.
     public static void menu_entries(int introduction){
-        /*
-         * Meant to look like a graphical menu.
-         * 
-         * TODO: code the following options: 1, 2 and 3.
-         * */
-        if(introduction==1) System.out.println(".----------------------------.");
+        if(introduction==1) System.out.println(".----------------------------------------------------------.");
         // Introduction value is used in case a note is attached above the visual menu, this means this parameter merely adds a little cosmetic change as needed.
 
-        System.out.println("| 1 = Product lookup by ID   |");
-        System.out.println("| 2 = Product lookup by name |");
-        System.out.println("| 3 = Get product in stock   |");
-        System.out.println("| 4 = Exit                   |");
-        System.out.println(".____________________________.");
+        System.out.println("| 1 = Product lookup by ID                                 |");
+        System.out.println("| 2 = Product lookup by name                               |");
+        System.out.println("| 3 = Get product in stock                                 |");
+        System.out.println("| 4 = [Unused for now]                                     |");
+        System.out.println("| 5 = Product lookup by ID (using binary search approach)  |");
+        System.out.println("| 6 = Exit                                                 |");
+        System.out.println(".__________________________________________________________.");
 
         // Each entry and horizontal lines in the menu is currently 30 characters long, counting boundaries and spaces.
     }
@@ -95,6 +107,9 @@ public class Main_Menu {
         }
         else if(source_option==2){
             source_option_descriptor = "name";
+        }
+        else if(source_option==5){
+            source_option_descriptor = "ID (binary search)";
         }
 
         // Build up the confirmation question after the query type has been identified.
