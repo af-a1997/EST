@@ -80,16 +80,17 @@ public class Main_Menu {
 
     // These menu options are printed in more than one instance, so it uses a dedicated function, contains a graphical menu of sorts made in the console.
     public static void menu_entries(int introduction){
-        if(introduction==1) System.out.println(".----------------------------------------------------------.");
-        // Introduction value is used in case a note is attached above the visual menu, this means this parameter merely adds a little cosmetic change as needed.
+        // Introduction value is used in case a note is attached above the visual menu, this means this parameter merely adds a little cosmetic change as needed.  
+        if(introduction==1) // Would indent :85 properly but I'll keep it this way for aligning the method with the ones below.
+        System.out.println(".---------------------------------------------------------.");
 
-        System.out.println("| 1 = Product lookup by ID                                 |");
-        System.out.println("| 2 = Product lookup by name                               |");
-        System.out.println("| 3 = Get product in stock                                 |");
-        System.out.println("| 4 = [Unused for now]                                     |");
-        System.out.println("| 5 = Product lookup by ID (using binary search approach)  |");
-        System.out.println("| 6 = Exit                                                 |");
-        System.out.println(".__________________________________________________________.");
+        System.out.println("| 1 = Product lookup by ID                                |");
+        System.out.println("| 2 = Product lookup by name                              |");
+        System.out.println("| 3 = Get product in stock                                |");
+        System.out.println("| 4 = [Unused for now]                                    |");
+        System.out.println("| 5 = Product lookup by ID (using binary search approach) |");
+        System.out.println("| 6 = Exit                                                |");
+        System.out.println("._________________________________________________________.");
 
         // Each entry and horizontal lines in the menu is currently 30 characters long, counting boundaries and spaces.
     }

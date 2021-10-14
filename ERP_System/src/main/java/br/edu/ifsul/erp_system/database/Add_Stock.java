@@ -46,7 +46,7 @@ public class Add_Stock {
              * 1 -> use addAll()
              * 2 -> do type casting
              */
-            Add_Stock.stock_list.add(product_instance);
+            //Add_Stock.stock_list.add(product_instance);
         }
     }
 

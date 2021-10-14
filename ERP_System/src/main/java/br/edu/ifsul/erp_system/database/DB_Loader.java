@@ -151,30 +151,33 @@ public class DB_Loader {
 
     // Option 5: looks for product by ID, but using a binary search approach.
     public static void findProdByIdBin(int b_pr_id_s) throws IOException {
-        // TODO: write binary search code here.
         int s = df_list.size();
         int[] id_list = new int[s];
 
-        for(int x=0;x<df_list.size();x++){
-            id_list[x] = Integer.valueOf(df_list.get(x).getProduct_id());
+        id_list[0] = 0;
+        for(int x=1;x<df_list.size();x++){
+            id_list[x] = x;
         }
 
-        int pid = binarySearch(id_list,0,id_list.length,id_list[id_list.length/2]);
+        int pid = binarySearch(id_list,1,id_list.length,Integer.valueOf(id_list[b_pr_id_s]));
+        System.out.println(pid);
 
-           if(Integer.valueOf(df_list.get(pid).getProduct_id()) == b_pr_id_s){
+        // The big idea here is to check if the product found through binary search is the same as the one the user inputted, if it was found, prints its information or tells you it hasn't been found.
+
+        if(pid == b_pr_id_s){
             System.out.println("Product with ID " + df_list.get(pid).getProduct_id() + " has been found, here is some of its information:\n");
             System.out.println("Name: " + df_list.get(pid).getName());
             System.out.println("Maximum cost: " + df_list.get(pid).getPrices_aMax() + " " + df_list.get(pid).getPrices_currency());
             System.out.println("Minimum cost: " + df_list.get(pid).getPrices_aMin() + " " + df_list.get(pid).getPrices_currency());
             System.out.print("\n");
         }
-        else{
-            System.out.println("This product hasn't been found");
+        else if(Integer.valueOf(df_list.get(pid).getProduct_id()) < 0 || Integer.valueOf(df_list.get(pid).getProduct_id()) > df_list.size()){
+            System.out.println("This product hasn't been found, the ID doesn't match any of the existing products.");
+            
+            Main_Menu.confirmationDialogue(5);
         }
         
-
-        //int np = Integer.valueOf(df_list.get(b_pr_id_s).getProduct_id());
-        //System.out.println("ID = " + np);
+        Main_Menu.confirmationDialogue(5);
     }
 
     // Binary search code from: https://www.javatpoint.com/binary-search-in-java
@@ -192,7 +195,7 @@ public class DB_Loader {
             mid = (first + last)/2;
         }  
         if ( first > last ){
-            System.out.println("Element is not found!");
+            //System.out.println("Element is not found!");
             return -1;
         }
         return -2;
