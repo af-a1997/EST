@@ -3,8 +3,8 @@ package br.edu.ifsul.erp_system.main_menu;
 import java.io.IOException;
 import java.util.Scanner;
 
-import br.edu.ifsul.erp_system.database.Add_Stock;
 import br.edu.ifsul.erp_system.database.DB_Loader;
+//import br.edu.ifsul.erp_system.database.Stock_Param;
 
 @SuppressWarnings({ "resource" })
 
@@ -54,12 +54,19 @@ public class Main_Menu {
             }
         }
         else if(choice==3){
-            
             int pid = 0;
+            int sc = 0;
+
             System.out.print("Enter the product's ID: ");
             pid = new Scanner(System.in).nextInt();
+            System.out.print("Enter how much units of this product you need: ");
+            sc = new Scanner(System.in).nextInt();
 
-            DB_Loader.retrieveProduct(pid);
+            DB_Loader.retrieveProduct(pid,sc);
+        }
+        else if(choice==4){
+            // Would add: BST to look for product by ID.
+            System.out.println("Not fully implemented feature.");
         }
         else if(choice==5){
             System.out.print("Write the ID associated to the product you're looking for: ");
@@ -87,7 +94,7 @@ public class Main_Menu {
         System.out.println("| 1 = Product lookup by ID                                |");
         System.out.println("| 2 = Product lookup by name                              |");
         System.out.println("| 3 = Get product in stock                                |");
-        System.out.println("| 4 = [Unused for now]                                    |");
+        System.out.println("| 4 = BST actions (unimplemented)                         |");
         System.out.println("| 5 = Product lookup by ID (using binary search approach) |");
         System.out.println("| 6 = Exit                                                |");
         System.out.println("._________________________________________________________.");
@@ -104,17 +111,23 @@ public class Main_Menu {
 
         // To display the kind of query the user may want after looking up a product.
         if(source_option==1){
-            source_option_descriptor = "ID";
+            source_option_descriptor = "ID lookup query";
         }
         else if(source_option==2){
-            source_option_descriptor = "name";
+            source_option_descriptor = "name lookup query";
+        }
+        else if(source_option==3){
+            source_option_descriptor = "stock extract transaction";
+        }
+        else if(source_option==4){
+            source_option_descriptor = "BST action";
         }
         else if(source_option==5){
-            source_option_descriptor = "ID (binary search)";
+            source_option_descriptor = "ID (binary search) lookup query";
         }
 
         // Build up the confirmation question after the query type has been identified.
-        String confirmation_string = "| Would you like to perform another "+source_option_descriptor+" lookup query? |";
+        String confirmation_string = "| Would you like to perform another "+source_option_descriptor+"? |";
         String confirmation_instruction = "| Write one of two words below and hit [ENTER].";
 
         // To build part of the menu, purely comestic.

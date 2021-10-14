@@ -53,8 +53,7 @@ public class Data_Fields {
                 + ", prices_merchant=" + prices_merchant + ", prices_sale=" + prices_sale + ", prices_shipping="
                 + prices_shipping + ", primary_categories=" + primary_categories + ", product_id=" + product_id
                 + ", seen_timestamp=" + seen_timestamp + ", srcURLs=" + srcURLs + ", updated=" + updated + ", weight="
-                + weight + ", stock_list_cont="
-                + stock_list_cont + "]";
+                + weight + "]";
     }
 
     // Generated getters and setters.
