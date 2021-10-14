@@ -9,6 +9,6 @@ ERP_System offers the following features, no more will be added as this reposito
 
 ## Notes
 
-* Refer to the &laquo;projects&raquo; tab for a list of TODOs, WIPs and finished tasks and features.
-* Check the wiki for more information about this repository and instructions on how to run the program.
+* Refer to the &laquo;[projects](https://github.com/af-a1997/EST/projects)&raquo; tab for a list of TODOs, WIPs and finished tasks and features.
+* Check the &laquo;[wiki](https://github.com/af-a1997/EST/wiki)&raquo; for more information about this repository and instructions on how to run the program.
 * This system has reached its EOL, it won't be updated anymore, but feel free to explore/use the code and/or throw in suggestions if you like.
